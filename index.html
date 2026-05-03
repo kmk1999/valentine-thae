@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>💌 Kyaw Min Khant has a question for HSU</title>
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+/* ── BODY ── */
+body{
+  font-family:ui-sans-serif,system-ui,-apple-system,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  background:linear-gradient(160deg,#ffd6e7 0%,#ffb8d2 20%,#ffe0ec 55%,#fff0f5 100%);
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ── PARTICLES LAYER ── */
+#particles{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;overflow:hidden;
+}
+.hp{ /* heart particle */
+  position:absolute;bottom:-60px;
+  animation:float-up linear infinite;opacity:0;
+}
+@keyframes float-up{
+  0%  {transform:translateY(0) rotate(0deg) scale(1);opacity:0}
+  10% {opacity:.65}
+  90% {opacity:.45}
+  100%{transform:translateY(-115vh) rotate(25deg) scale(0.8);opacity:0}
+}
+.petal{
+  position:absolute;top:-40px;
+  width:13px;height:18px;
+  background:radial-gradient(ellipse at 40% 30%,#ffcce0,#ff80ac);
+  border-radius:50% 50% 50% 0;
+  animation:fall-petal linear infinite;
+}
+@keyframes fall-petal{
+  0%  {transform:translateY(0) rotate(0deg) translateX(0);opacity:0}
+  5%  {opacity:.75}
+  95% {opacity:.5}
+  100%{transform:translateY(115vh) rotate(800deg) translateX(60px);opacity:0}
+}
+.star-p{
+  position:absolute;
+  animation:twinkle ease-in-out infinite;
+  color:#ffb8d2;
+}
+@keyframes twinkle{
+  0%,100%{opacity:.08;transform:scale(.7)}
+  50%    {opacity:.9;transform:scale(1.3)}
+}
+
+/* ── LAYOUT ── */
+#main{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:24px 16px 80px;
+  gap:0;
+}
+
+/* ── CARD WRAPPER ── */
+#card-wrapper{
+  width:min(92vw,500px);
+  animation:bounce-in .9s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes bounce-in{
+  0%  {opacity:0;transform:scale(.4) translateY(40px)}
+  70% {opacity:1;transform:scale(1.04) translateY(-8px)}
+  100%{opacity:1;transform:scale(1) translateY(0)}
+}
+
+/* ── CARD FACES (shared) ── */
+.card-face{
+  position:relative;
+  background:linear-gradient(135deg,#fff5f9 0%,#ffecf3 50%,#ffffff 100%);
+  border-radius:28px;
+  padding:clamp(22px,5vw,40px) clamp(18px,5vw,36px);
+  box-shadow:0 30px 60px -15px rgba(136,14,79,.18),
+             0 8px 20px -5px rgba(233,30,140,.12);
+  border:1.5px solid rgba(255,160,200,.55);
+  overflow:hidden;
+}
+
+/* shimmer sweep on card */
+.card-face::before{
+  content:'';position:absolute;inset:0;border-radius:28px;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,200,230,.35) 50%,transparent 65%);
+  background-size:250% 100%;
+  animation:shimmer-sweep 4s ease-in-out infinite;
+  pointer-events:none;z-index:0;
+}
+@keyframes shimmer-sweep{
+  0%  {background-position:250% 0}
+  100%{background-position:-250% 0}
+}
+
+/* glitter border pulse */
+.card-face::after{
+  content:'';position:absolute;inset:-1px;border-radius:28px;
+  background:conic-gradient(from 0deg,transparent,rgba(233,30,140,.25),transparent,rgba(255,80,150,.2),transparent);
+  animation:border-spin 6s linear infinite;
+  pointer-events:none;z-index:0;
+  opacity:.6;
+}
+@keyframes border-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+.card-face > *{position:relative;z-index:1}
+
+/* corner hearts */
+.ch{
+  position:absolute;color:#ffb8d2;font-size:1.25rem;opacity:.65;z-index:1;
+  animation:pulse-ch 2.2s ease-in-out infinite;
+}
+.ch.tl{top:10px;left:14px}
+.ch.tr{top:10px;right:14px}
+.ch.bl{bottom:10px;left:14px}
+.ch.br{bottom:10px;right:14px}
+@keyframes pulse-ch{
+  0%,100%{transform:scale(1)}
+  50%    {transform:scale(1.4)}
+}
+
+/* card-back: hidden initially */
+#card-back{display:none;text-align:center;flex-direction:column;align-items:center;gap:14px}
+#card-back.show{display:flex;animation:card-enter .7s cubic-bezier(.34,1.56,.64,1) both}
+#card-front.hide{animation:card-exit .35s ease-in both}
+
+@keyframes card-exit{
+  0%  {opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(.8)}
+}
+@keyframes card-enter{
+  0%  {opacity:0;transform:scale(.7)}
+  100%{opacity:1;transform:scale(1)}
+}
+
+/* ── CARD FRONT CONTENT ── */
+.from-text{
+  text-align:center;color:#c2185b;
+  font-size:clamp(12px,3vw,15px);font-weight:500;
+  letter-spacing:.05em;margin-bottom:16px;
+}
+
+/* ── ANIMATED HEART ── */
+#heart-svg{
+  display:block;margin:0 auto 18px;
+  width:clamp(80px,22vw,110px);height:clamp(80px,22vw,110px);
+  animation:pulse-heart 1.3s ease-in-out infinite;
+  filter:drop-shadow(0 0 10px rgba(233,30,140,.45));
+}
+@keyframes pulse-heart{
+  0%,100%{transform:scale(1)}
+  15%    {transform:scale(1.14)}
+  30%    {transform:scale(.95)}
+  45%    {transform:scale(1.09)}
+}
+
+/* ── HEADINGS ── */
+.dear-text{
+  text-align:center;font-size:clamp(18px,5vw,26px);
+  font-weight:700;color:#880e4f;margin-bottom:6px;
+}
+.dear-text span{color:#e91e8c}
+
+.question-text{
+  text-align:center;font-size:clamp(17px,4.5vw,24px);
+  font-weight:700;margin-bottom:28px;
+  background:linear-gradient(135deg,#880e4f,#e91e8c,#ff4d86,#c2185b,#880e4f);
+  background-size:300% 100%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:rainbow-text 5s ease infinite;
+}
+@keyframes rainbow-text{
+  0%  {background-position:0% 50%}
+  50% {background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* ── BUTTONS AREA ── */
+#buttons-area{
+  display:flex;align-items:center;justify-content:center;
+  gap:20px;min-height:70px;margin-bottom:14px;
+}
+
+#yes-btn{
+  background:linear-gradient(135deg,#e91e8c,#ff4d86,#e91e8c);
+  background-size:200% 100%;
+  color:#fff;border:none;
+  padding:clamp(10px,2.5vw,14px) clamp(22px,5vw,32px);
+  border-radius:9999px;font-size:clamp(15px,4vw,18px);font-weight:700;
+  cursor:pointer;
+  box-shadow:0 8px 24px rgba(233,30,140,.45),0 0 0 0 rgba(233,30,140,.3);
+  transform-origin:center;transform:scale(1);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;
+  position:relative;overflow:hidden;z-index:10;white-space:nowrap;
+  animation:btn-glow 2.5s ease-in-out infinite;
+}
+@keyframes btn-glow{
+  0%,100%{box-shadow:0 8px 24px rgba(233,30,140,.45),0 0 0 0 rgba(233,30,140,.3)}
+  50%    {box-shadow:0 10px 30px rgba(233,30,140,.6),0 0 20px 4px rgba(233,30,140,.25)}
+}
+#yes-btn::after{ /* shine sweep */
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.4) 50%,transparent 60%);
+  background-size:200% 100%;
+  animation:btn-shine 2.2s ease-in-out infinite;
+}
+@keyframes btn-shine{
+  0%  {background-position:200% 0}
+  100%{background-position:-200% 0}
+}
+#yes-btn:active{transform:scale(.95) !important}
+
+/* NO button styles (will be made fixed by JS) */
+#no-btn{
+  background:#fff;color:#e91e8c;
+  border:2px solid #ffb8d2;
+  padding:clamp(10px,2.5vw,14px) clamp(22px,5vw,32px);
+  border-radius:9999px;font-size:clamp(15px,4vw,18px);font-weight:600;
+  cursor:pointer;
+  transform-origin:center;transform:scale(1);
+  transition:left .3s cubic-bezier(.34,1.56,.64,1),
+             top  .3s cubic-bezier(.34,1.56,.64,1),
+             transform .35s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;user-select:none;
+  position:relative;z-index:10;
+}
+#no-btn.floating{
+  position:fixed;margin:0;z-index:9000;
+  transition:left .28s cubic-bezier(.34,1.56,.64,1),
+             top  .28s cubic-bezier(.34,1.56,.64,1),
+             transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── HINT TEXT ── */
+#hint-text{
+  text-align:center;color:#e91e8c;font-size:13px;
+  font-style:italic;min-height:20px;opacity:.8;
+  transition:opacity .3s;
+}
+#counter-text{
+  text-align:center;font-size:11px;color:#d08090;
+  margin-top:5px;visibility:hidden;
+}
+
+/* ── CARD BACK ── */
+.yay-emoji{font-size:clamp(52px,14vw,72px);animation:emoji-pop .6s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes emoji-pop{
+  0%  {transform:scale(0) rotate(-20deg)}
+  100%{transform:scale(1) rotate(0deg)}
+}
+.back-h{
+  font-size:clamp(28px,8vw,40px);font-weight:800;color:#880e4f;
+}
+.back-p{color:#c2185b;font-size:clamp(14px,3.5vw,17px);line-height:1.5}
+
+/* ── CONFETTI CANVAS ── */
+#confetti-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:800;
+}
+
+/* ── SPARKLE ── */
+.sparkle{
+  position:fixed;pointer-events:none;z-index:810;
+  font-size:1.1rem;
+  animation:sparkle-fly .9s ease-out forwards;
+}
+@keyframes sparkle-fly{
+  0%  {opacity:1;transform:translate(0,0) scale(1)}
+  100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}
+}
+
+/* ── RECEIPT WRAPPER ── */
+#receipt-wrapper{
+  display:none;
+  width:min(92vw,400px);
+  margin-top:28px;
+}
+#receipt-wrapper.visible{
+  display:block;
+  animation:receipt-print .9s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes receipt-print{
+  0%  {opacity:0;transform:translateY(50px) scaleY(.6);transform-origin:top center}
+  100%{opacity:1;transform:translateY(0) scaleY(1)}
+}
+
+/* ── RECEIPT PAPER ── */
+#receipt{
+  background:#fffdf8;
+  border-left:1px solid #e8d8c0;
+  border-right:1px solid #e8d8c0;
+  border-bottom:1px solid #e8d8c0;
+  position:relative;
+  padding:28px 28px 24px;
+  font-family:'Courier New',monospace;
+  box-shadow:0 8px 32px rgba(100,40,40,.12);
+}
+/* torn paper top */
+#receipt-top{
+  width:100%;height:16px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3E%3Cpath d='M0,16 C4,4 8,14 12,6 C16,-2 20,10 24,16Z' fill='%23fffdf8'/%3E%3C/svg%3E") repeat-x bottom,
+    #fffdf8;
+  background-size:24px 16px,100%;
+  border-top:1px solid #e8d8c0;
+  border-left:1px solid #e8d8c0;
+  border-right:1px solid #e8d8c0;
+  filter:drop-shadow(0 -3px 3px rgba(0,0,0,.06));
+}
+/* torn paper bottom */
+#receipt-bottom{
+  width:100%;height:16px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='16'%3E%3Cpath d='M0,0 C4,12 8,2 12,10 C16,18 20,6 24,0Z' fill='%23fffdf8'/%3E%3C/svg%3E") repeat-x top,
+    #fffdf8;
+  background-size:24px 16px,100%;
+  border-bottom:1px solid #e8d8c0;
+  border-left:1px solid #e8d8c0;
+  border-right:1px solid #e8d8c0;
+}
+
+.r-dashes{text-align:center;color:#c2185b;letter-spacing:2px;font-size:10px;margin:3px 0}
+.r-title{
+  text-align:center;font-size:clamp(16px,4vw,19px);
+  font-weight:800;letter-spacing:.18em;color:#880e4f;margin:5px 0;
+}
+.r-date{text-align:center;color:#9a6a50;font-size:11px;margin-bottom:10px}
+.r-div{border:none;border-top:1px dashed #d0c0b0;margin:9px 0}
+.r-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin:6px 0;
+  animation:row-appear .4s ease both;
+}
+@keyframes row-appear{
+  0%  {opacity:0;transform:translateX(-8px)}
+  100%{opacity:1;transform:translateX(0)}
+}
+.r-label{color:#aaa;font-size:10px;letter-spacing:.07em;text-transform:uppercase;flex-shrink:0}
+.r-val{color:#333;font-size:12px;font-weight:600;text-align:right;flex:1;padding-left:8px}
+.r-val.yes{color:#e91e8c;font-size:15px;font-weight:800}
+.r-verdict{
+  text-align:center;font-style:italic;color:#c2185b;
+  font-size:11px;margin:8px 0 10px;
+}
+.r-stamp{text-align:center;margin:12px 0 8px}
+.stamp-box{
+  display:inline-block;
+  border:3px solid #e91e8c;color:#e91e8c;
+  padding:5px 18px;font-size:13px;
+  letter-spacing:.22em;font-weight:800;
+  transform:rotate(-3deg);opacity:0;
+  animation:stamp-appear .5s cubic-bezier(.34,1.56,.64,1) 1.5s forwards;
+}
+@keyframes stamp-appear{
+  0%  {opacity:0;transform:rotate(-3deg) scale(2.5)}
+  60% {opacity:1;transform:rotate(-3deg) scale(.95)}
+  100%{opacity:1;transform:rotate(-3deg) scale(1)}
+}
+.r-footer{text-align:center;color:#e91e8c;font-size:10px;line-height:1.7;margin-top:8px}
+
+/* ── SHARE AREA ── */
+#share-area{
+  display:none;width:min(92vw,400px);
+  margin-top:28px;padding-bottom:60px;
+}
+#share-area.visible{
+  display:block;
+  animation:bounce-in .6s cubic-bezier(.34,1.56,.64,1) .3s both;
+}
+.share-btn{
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;width:100%;padding:14px;
+  border-radius:9999px;border:none;
+  font-size:15px;font-weight:600;cursor:pointer;
+  margin-bottom:12px;
+  transition:transform .18s,box-shadow .18s;
+}
+.share-btn:hover{transform:translateY(-2px)}
+.share-btn:active{transform:scale(.96)}
+.btn-dl  {background:linear-gradient(135deg,#880e4f,#e91e8c);color:#fff;box-shadow:0 4px 16px rgba(233,30,140,.35)}
+.btn-wa  {background:#25D366;color:#fff;box-shadow:0 4px 14px rgba(37,211,102,.3)}
+.btn-fb  {background:#1877F2;color:#fff;box-shadow:0 4px 14px rgba(24,119,242,.3)}
+.btn-ig  {background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;box-shadow:0 4px 14px rgba(188,24,136,.3)}
+.btn-tt  {background:#010101;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.28)}
+.btn-twit{background:#000;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.22)}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:rgba(136,14,79,.92);color:#fff;
+  padding:9px 22px;border-radius:20px;
+  font-size:13px;white-space:nowrap;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+  z-index:9999;pointer-events:none;
+}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:420px){
+  .card-face{padding:20px 16px}
+  .r-title{font-size:15px}
+  #receipt{padding:22px 18px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- PARTICLES -->
+<div id="particles"></div>
+
+<!-- CONFETTI -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- ── CARD ── -->
+  <div id="card-wrapper">
+
+    <!-- FRONT -->
+    <div class="card-face" id="card-front">
+      <span class="ch tl">♥</span><span class="ch tr">♥</span>
+      <span class="ch bl">♥</span><span class="ch br">♥</span>
+
+      <p class="from-text">From <strong>Kyaw Min Khant</strong></p>
+
+      <!-- Animated heart SVG -->
+      <svg id="heart-svg" viewBox="0 0 100 92" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="hg" cx="50%" cy="38%" r="60%">
+            <stop offset="0%"   stop-color="#ff80b4"/>
+            <stop offset="55%"  stop-color="#e91e8c"/>
+            <stop offset="100%" stop-color="#7b0040"/>
+          </radialGradient>
+          <radialGradient id="hg2" cx="35%" cy="30%" r="40%">
+            <stop offset="0%"   stop-color="rgba(255,255,255,.35)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+          </radialGradient>
+          <filter id="hglow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="b"/>
+            <feComposite in="SourceGraphic" in2="b" operator="over"/>
+          </filter>
+        </defs>
+        <!-- Glow layer -->
+        <path fill="rgba(233,30,140,.2)" filter="url(#hglow)"
+          d="M50,86 C50,86 8,56 8,30 C8,13 20,3 32,6 C39,8 44,14 50,19 C56,14 61,8 68,6 C80,3 92,13 92,30 C92,56 50,86 50,86z"/>
+        <!-- Main heart -->
+        <path fill="url(#hg)"
+          d="M50,86 C50,86 8,56 8,30 C8,13 20,3 32,6 C39,8 44,14 50,19 C56,14 61,8 68,6 C80,3 92,13 92,30 C92,56 50,86 50,86z"/>
+        <!-- Highlight -->
+        <path fill="url(#hg2)"
+          d="M50,86 C50,86 8,56 8,30 C8,13 20,3 32,6 C39,8 44,14 50,19 C56,14 61,8 68,6 C80,3 92,13 92,30 C92,56 50,86 50,86z"/>
+        <!-- Sparkle dots -->
+        <circle cx="26" cy="26" r="2.5" fill="rgba(255,255,255,.75)">
+          <animate attributeName="opacity" values=".75;.1;.75" dur="1.6s" repeatCount="indefinite"/>
+          <animate attributeName="r" values="2.5;1.5;2.5" dur="1.6s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="70" cy="20" r="2" fill="rgba(255,255,255,.6)">
+          <animate attributeName="opacity" values=".1;.7;.1" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="40" cy="15" r="1.5" fill="rgba(255,255,255,.5)">
+          <animate attributeName="opacity" values=".5;.1;.5" dur="1.2s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+
+      <p class="dear-text">Dear <span>HSU</span>,</p>
+      <h2 class="question-text">Will you be my Valentine? 💌</h2>
+
+      <div id="buttons-area">
+        <button id="yes-btn" onclick="handleYes()">Yes 💕</button>
+        <!-- placeholder keeps layout stable after NO becomes fixed -->
+        <div id="no-placeholder" style="display:inline-block;visibility:hidden"></div>
+        <button id="no-btn">No</button>
+      </div>
+
+      <p id="hint-text">"No" seems a bit shy 😈</p>
+      <p id="counter-text">Escape attempts: <span id="esc-num">0</span> 🏃‍♀️</p>
+    </div>
+
+    <!-- BACK (celebration) -->
+    <div class="card-face" id="card-back">
+      <span class="ch tl">♥</span><span class="ch tr">♥</span>
+      <span class="ch bl">♥</span><span class="ch br">♥</span>
+      <div class="yay-emoji">💖</div>
+      <h2 class="back-h">Yay! 🎉</h2>
+      <p class="back-p">You just made <strong>Kyaw Min Khant</strong> very happy!</p>
+      <p class="back-p" style="font-size:clamp(17px,4.5vw,22px);margin-top:6px">
+        Happy Valentine's Day,<br>
+        <span style="color:#e91e8c;font-weight:800">HSU</span>! 💕
+      </p>
+    </div>
+
+  </div><!-- /#card-wrapper -->
+
+  <!-- ── RECEIPT ── -->
+  <div id="receipt-wrapper">
+    <div id="receipt-top"></div>
+    <div id="receipt">
+      <div class="r-dashes">- - - - - - - - - - - - - -</div>
+      <div class="r-title">VALENTINE'S RECEIPT</div>
+      <div class="r-dashes">- - - - - - - - - - - - - -</div>
+      <div class="r-date" id="r-date"></div>
+      <hr class="r-div">
+      <div class="r-row" style="animation-delay:.1s"><span class="r-label">FROM</span><span class="r-val">Kyaw Min Khant</span></div>
+      <div class="r-row" style="animation-delay:.2s"><span class="r-label">TO</span><span class="r-val">HSU</span></div>
+      <hr class="r-div">
+      <div class="r-row" style="animation-delay:.35s"><span class="r-label">ASKED</span><span class="r-val">Will you be my Valentine?</span></div>
+      <div class="r-row" style="animation-delay:.5s"><span class="r-label">ANSWER</span><span class="r-val yes">YES ✓</span></div>
+      <hr class="r-div">
+      <div class="r-row" style="animation-delay:.65s"><span class="r-label">ESCAPE ATTEMPTS</span><span class="r-val" id="r-count">0</span></div>
+      <div class="r-verdict" id="r-verdict" style="animation-delay:.75s">"Love at first sight!"</div>
+      <div class="r-stamp"><div class="stamp-box">OFFICIAL</div></div>
+      <hr class="r-div">
+      <div class="r-footer">Thank you for your love! 💕<br>Made with ❤️ for HSU</div>
+    </div>
+    <div id="receipt-bottom"></div>
+  </div>
+
+  <!-- ── SHARE ── -->
+  <div id="share-area">
+    <button class="share-btn btn-dl" onclick="downloadReceipt()">Save Receipt as Image</button>
+  </div>
+
+</div><!-- /#main -->
+
+<script>
+/* ────────────────────────────────────
+   BACKGROUND PARTICLES
+──────────────────────────────────── */
+const HEARTS = ['💕','💖','💗','💝','💞','❤️','🌸','✨','🌺','💓'];
+const pc = document.getElementById('particles');
+
+for (let i = 0; i < 22; i++) {
+  const el = document.createElement('span');
+  el.className = 'hp';
+  el.textContent = HEARTS[i % HEARTS.length];
+  el.style.cssText = `left:${Math.random()*100}%;font-size:${Math.random()*1.4+.7}rem;animation-duration:${Math.random()*5+4}s;animation-delay:${Math.random()*9}s`;
+  pc.appendChild(el);
+}
+for (let i = 0; i < 14; i++) {
+  const el = document.createElement('div');
+  el.className = 'petal';
+  el.style.cssText = `left:${Math.random()*100}%;width:${Math.random()*9+7}px;height:${Math.random()*12+9}px;transform:rotate(${Math.random()*360}deg);animation-duration:${Math.random()*7+7}s;animation-delay:${Math.random()*11}s`;
+  pc.appendChild(el);
+}
+for (let i = 0; i < 18; i++) {
+  const el = document.createElement('span');
+  el.className = 'star-p';
+  el.textContent = ['✦','✧','⋆','✵','✸'][i%5];
+  el.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;font-size:${Math.random()*10+5}px;animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*4}s`;
+  pc.appendChild(el);
+}
+
+/* ────────────────────────────────────
+   STATE
+──────────────────────────────────── */
+let escapeCount = 0;
+let yesScale    = 1.0;
+let noScale     = 1.0;
+let noIsFixed   = false;
+let toastTimer  = null;
+
+const yesBtn = document.getElementById('yes-btn');
+const noBtn  = document.getElementById('no-btn');
+const noPH   = document.getElementById('no-placeholder'); // placeholder
+const hint   = document.getElementById('hint-text');
+const ctrTxt = document.getElementById('counter-text');
+const escNum = document.getElementById('esc-num');
+const toast  = document.getElementById('toast');
+
+/* ────────────────────────────────────
+   INIT: sync placeholder size to NO btn
+──────────────────────────────────── */
+function syncPlaceholder() {
+  noPH.style.width  = noBtn.offsetWidth  + 'px';
+  noPH.style.height = noBtn.offsetHeight + 'px';
+}
+window.addEventListener('load', syncPlaceholder);
+
+/* ────────────────────────────────────
+   HINT TEXTS
+──────────────────────────────────── */
+function getHint(n) {
+  if (n === 0) return '"No" seems a bit shy 😈';
+  if (n < 4)   return 'Hmm… are you sure? 🤔';
+  if (n < 8)   return 'Keep trying! 😏';
+  if (n < 13)  return 'Resistance is futile! 💕';
+  if (n < 20)  return "You can't catch me! 🏃‍♀️";
+  if (n < 30)  return 'Impressive escape skills! 🎯';
+  return 'Enlightened denial achieved 🌟';
+}
+function getVerdict(n) {
+  if (n === 0)  return '"Love at first sight!"';
+  if (n < 3)   return '"Briefly considered it"';
+  if (n < 8)   return '"A little dramatic"';
+  if (n < 15)  return '"Playing hard to get"';
+  if (n < 25)  return '"Truly tested resistance"';
+  if (n < 35)  return '"Achieved enlightened denial"';
+  return '"Legendary escape artist"';
+}
+
+const TOASTS = ['Nope! 🏃','Too slow! 💨','Nice try! 😂','Almost! 🎯','Haha! 😝','Catch me! 💕','So close! 🙈','Zoom! 💨','Nah! 🌸','Whoosh! ✨'];
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 1300);
+}
+
+/* ────────────────────────────────────
+   NO BUTTON — DODGE
+──────────────────────────────────── */
+function dodge() {
+  escapeCount++;
+  noScale  = Math.max(0.32, noScale  - 0.07);
+  yesScale = Math.min(2.9,  yesScale + 0.14);
+
+  yesBtn.style.transform = `scale(${yesScale})`;
+  noBtn .style.transform = `scale(${noScale})`;
+
+  // First dodge → make NO fixed
+  if (!noIsFixed) {
+    noIsFixed = true;
+    const rect = noBtn.getBoundingClientRect();
+    noBtn.style.position = 'fixed';
+    noBtn.style.left     = rect.left + 'px';
+    noBtn.style.top      = rect.top  + 'px';
+    noBtn.style.margin   = '0';
+    noBtn.classList.add('floating');
+    document.body.appendChild(noBtn);
+  }
+
+  // Random safe position on screen
+  const bw = noBtn.offsetWidth  * noScale;
+  const bh = noBtn.offsetHeight * noScale;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  let nx, ny, attempts = 0;
+  do {
+    nx = Math.random() * (vw - bw - 24) + 12;
+    ny = Math.random() * (vh - bh - 80) + 12;
+    attempts++;
+  } while (attempts < 30 && Math.hypot(nx - vw/2, ny - vh/2) < 80);
+
+  noBtn.style.left = nx + 'px';
+  noBtn.style.top  = ny + 'px';
+
+  // Update UI
+  hint.textContent    = getHint(escapeCount);
+  ctrTxt.style.visibility = 'visible';
+  escNum.textContent  = escapeCount;
+  showToast(TOASTS[escapeCount % TOASTS.length]);
+}
+
+// PC: hover
+noBtn.addEventListener('mouseenter', dodge);
+
+// Mobile: touchstart (prevent the tap from completing)
+noBtn.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  dodge();
+}, { passive: false });
+
+/* ────────────────────────────────────
+   YES BUTTON — HANDLE
+──────────────────────────────────── */
+function handleYes() {
+  // Populate receipt
+  document.getElementById('r-date').textContent    = nowString();
+  document.getElementById('r-count').textContent   = escapeCount;
+  document.getElementById('r-verdict').textContent = getVerdict(escapeCount);
+
+  // Burst
+  spawnSparkles(yesBtn);
+  startConfetti();
+
+  // Hide NO button
+  if (noBtn.parentNode) noBtn.style.display = 'none';
+
+  // Swap card faces
+  const front = document.getElementById('card-front');
+  const back  = document.getElementById('card-back');
+  front.classList.add('hide');
+  setTimeout(() => {
+    front.style.display = 'none';
+    back.classList.add('show');
+  }, 370);
+
+  // Show receipt + share after card appears
+  setTimeout(() => {
+    const rw = document.getElementById('receipt-wrapper');
+    const sa = document.getElementById('share-area');
+    rw.classList.add('visible');
+    sa.classList.add('visible');
+    setTimeout(() => rw.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+  }, 900);
+
+  // Stop confetti after 6s
+  setTimeout(stopConfetti, 6000);
+}
+
+/* ────────────────────────────────────
+   SPARKLES
+──────────────────────────────────── */
+function spawnSparkles(btn) {
+  const r  = btn.getBoundingClientRect();
+  const cx = r.left + r.width  / 2;
+  const cy = r.top  + r.height / 2;
+  const em = ['✨','💕','💖','⭐','🌸','💗','🌟','💫','🎀'];
+  for (let i = 0; i < 14; i++) {
+    const el = document.createElement('div');
+    el.className = 'sparkle';
+    el.textContent = em[Math.floor(Math.random() * em.length)];
+    const angle = (i / 14) * Math.PI * 2;
+    const dist  = 55 + Math.random() * 90;
+    el.style.setProperty('--dx', (Math.cos(angle) * dist) + 'px');
+    el.style.setProperty('--dy', (Math.sin(angle) * dist) + 'px');
+    el.style.left = cx + 'px';
+    el.style.top  = cy + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1000);
+  }
+}
+
+/* ────────────────────────────────────
+   CONFETTI
+──────────────────────────────────── */
+const canvas = document.getElementById('confetti-canvas');
+const ctx    = canvas.getContext('2d');
+let pieces   = [];
+let running  = false;
+let rafId    = null;
+
+function resizeCanvas() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const COLORS = ['#e91e8c','#ff4d86','#ffb8d2','#880e4f','#ff80ac','#c2185b','#ff0055','#ffcc00','#ff6b9d','#fff'];
+
+function makePiece() {
+  return {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height - canvas.height,
+    w: Math.random() * 13 + 4,
+    h: Math.random() * 6  + 2,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    vx: (Math.random() - .5) * 5,
+    vy: Math.random() * 4 + 1.5,
+    rot: Math.random() * Math.PI * 2,
+    rs: (Math.random() - .5) * .18,
+    shape: Math.random() > .45 ? 'rect' : 'circle',
+  };
+}
+
+function startConfetti() {
+  running = true;
+  pieces  = [];
+  for (let i = 0; i < 160; i++) pieces.push(makePiece());
+  if (!rafId) animConfetti();
+}
+function stopConfetti() { running = false; }
+
+function animConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (running && Math.random() < .5) for (let i = 0; i < 4; i++) pieces.push(makePiece());
+  pieces = pieces.filter(p => p.y < canvas.height + 30);
+  if (!running && pieces.length === 0) { rafId = null; return; }
+  for (const p of pieces) {
+    p.x += p.vx; p.y += p.vy; p.vy += .055; p.vx *= .993; p.rot += p.rs;
+    ctx.save();
+    ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+    ctx.fillStyle = p.color; ctx.globalAlpha = .88;
+    if (p.shape === 'circle') {
+      ctx.beginPath(); ctx.arc(0, 0, p.w/2, 0, Math.PI*2); ctx.fill();
+    } else {
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    }
+    ctx.restore();
+  }
+  rafId = requestAnimationFrame(animConfetti);
+}
+
+/* ────────────────────────────────────
+   DATE
+──────────────────────────────────── */
+function nowString() {
+  const d = new Date();
+  const M = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  const p = v => String(v).padStart(2,'0');
+  return `${p(d.getDate())} ${M[d.getMonth()]} ${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
+/* ────────────────────────────────────
+   DRAW RECEIPT ON CANVAS (for download / share)
+──────────────────────────────────── */
+function buildReceiptCanvas() {
+  const W = 420, H = 640, S = 2; // S = scale for retina
+  const c = document.createElement('canvas');
+  c.width = W*S; c.height = H*S;
+  const g = c.getContext('2d');
+  g.scale(S, S);
+
+  // Background
+  g.fillStyle = '#fffdf8';
+  g.fillRect(0, 0, W, H);
+
+  // Torn top
+  g.fillStyle = '#ffd0e0';
+  g.beginPath(); g.moveTo(0,0);
+  for (let x = 0; x <= W; x += 16) g.lineTo(x, (x/16)%2===0 ? 12 : 0);
+  g.lineTo(W, 0); g.closePath(); g.fill();
+
+  // Outer border
+  g.strokeStyle = '#e8d0d8'; g.lineWidth = 1;
+  g.strokeRect(18, 18, W-36, H-36);
+
+  const mono = `'Courier New', Courier, monospace`;
+  const dat  = document.getElementById('r-date').textContent;
+  const cnt  = document.getElementById('r-count').textContent;
+  const verd = document.getElementById('r-verdict').textContent;
+
+  // Dashes
+  g.fillStyle='#c2185b'; g.font=`11px ${mono}`; g.textAlign='center';
+  g.fillText('- - - - - - - - - - - - - - - - - -', W/2, 56);
+
+  // Title
+  g.fillStyle='#880e4f'; g.font=`bold 20px ${mono}`; g.textAlign='center';
+  g.fillText("VALENTINE'S RECEIPT", W/2, 83);
+
+  g.fillStyle='#c2185b'; g.font=`11px ${mono}`; g.textAlign='center';
+  g.fillText('- - - - - - - - - - - - - - - - - -', W/2, 100);
+
+  // Date
+  g.fillStyle='#9a6a50'; g.font=`11px ${mono}`; g.textAlign='center';
+  g.fillText(dat, W/2, 118);
+
+  // Dashed divider helper
+  function div(y) {
+    g.strokeStyle='#d0c0b0'; g.lineWidth=1;
+    g.setLineDash([5,5]);
+    g.beginPath(); g.moveTo(28,y); g.lineTo(W-28,y); g.stroke();
+    g.setLineDash([]);
+  }
+  // Row helper
+  function row(label, value, y, bigPink=false) {
+    g.textAlign='left';  g.fillStyle='#aaa'; g.font=`10px ${mono}`;
+    g.fillText(label, 30, y);
+    g.textAlign='right'; g.fillStyle = bigPink ? '#e91e8c' : '#333';
+    g.font = bigPink ? `bold 16px ${mono}` : `bold 13px ${mono}`;
+    g.fillText(value, W-30, y);
+  }
+
+  div(130);
+  row('FROM', 'Kyaw Min Khant', 150);
+  row('TO',   'HSU',            172);
+  div(184);
+  row('ASKED',  'Will you be my Valentine?', 206);
+  row('ANSWER', 'YES ✓',                    230, true);
+  div(242);
+  row('ESCAPE ATTEMPTS', cnt, 265);
+
+  // Verdict
+  g.fillStyle='#c2185b'; g.font=`italic 12px ${mono}`; g.textAlign='center';
+  g.fillText(verd, W/2, 290);
+
+  // Stamp box
+  g.save();
+  g.translate(W/2, 340); g.rotate(-0.055);
+  g.strokeStyle='#e91e8c'; g.lineWidth=3;
+  g.strokeRect(-65,-24,130,48);
+  g.fillStyle='#e91e8c'; g.font=`bold 15px ${mono}`; g.textAlign='center';
+  g.fillText('OFFICIAL', 0, 9);
+  g.restore();
+
+  div(375);
+
+  // Footer
+  g.fillStyle='#e91e8c'; g.font=`11px ${mono}`; g.textAlign='center';
+  g.fillText('Thank you for your love! ♥', W/2, 398);
+  g.fillText('Made with ♥ for HSU', W/2, 415);
+
+  // Torn bottom
+  g.fillStyle = '#ffd0e0';
+  g.beginPath(); g.moveTo(0, H);
+  for (let x = 0; x <= W; x += 16) g.lineTo(x, H - ((x/16)%2===0 ? 12 : 0));
+  g.lineTo(W, H); g.closePath(); g.fill();
+
+  return c;
+}
+
+function downloadReceipt() {
+  const c = buildReceiptCanvas();
+  const a = document.createElement('a');
+  a.download = 'valentine-receipt-hsu.png';
+  a.href = c.toDataURL('image/png');
+  a.click();
+}
+
+/* ────────────────────────────────────
+   SOCIAL SHARE
+──────────────────────────────────── */
+async function shareVia(platform) {
+  const n = escapeCount;
+  const v = getVerdict(n).replace(/"/g,'');
+  const txt = `💌 HSU said YES to being Kyaw Min Khant's Valentine!\n✨ ${n} escape attempt${n!==1?'s':''} — ${v}\n#ValentinesDay #WillYouBeMyValentine 💕`;
+  const enc = encodeURIComponent(txt);
+
+  if (platform === 'whatsapp') {
+    window.open(`https://wa.me/?text=${enc}`, '_blank');
+  } else if (platform === 'facebook') {
+    window.open(`https://www.facebook.com/sharer/sharer.php?quote=${enc}`, '_blank');
+  } else if (platform === 'twitter') {
+    window.open(`https://twitter.com/intent/tweet?text=${enc}`, '_blank');
+  } else {
+    // Instagram / TikTok — try Web Share API with image
+    const c    = buildReceiptCanvas();
+    const blob = await new Promise(res => c.toBlob(res, 'image/png'));
+    const file = new File([blob], 'valentine-receipt.png', { type: 'image/png' });
+
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: "Valentine's Receipt",
+          text: `HSU said YES! 💕 ${n} escape attempts — ${v}`,
+        });
+      } catch (e) {
+        if (e.name !== 'AbortError') fallbackShare(platform, blob);
+      }
+    } else {
+      fallbackShare(platform, blob);
+    }
+  }
+}
+
+function fallbackShare(platform, blob) {
+  // Download the image then open the platform
+  const url = URL.createObjectURL(blob);
+  const a   = document.createElement('a');
+  a.href = url; a.download = 'valentine-receipt.png'; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const target = platform === 'instagram' ? 'https://www.instagram.com/' : 'https://www.tiktok.com/';
+  setTimeout(() => window.open(target, '_blank'), 800);
+  showToast('Image saved! Share it on ' + (platform === 'instagram' ? 'Instagram' : 'TikTok') + ' 💕');
+}
+</script>
+</body>
+</html>
