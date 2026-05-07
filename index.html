@@ -646,17 +646,23 @@ function dodge() {
     document.body.appendChild(noBtn);
   }
 
-  // Random safe position on screen
+  // Random safe position — never overlap the YES button
   const bw = noBtn.offsetWidth  * noScale;
   const bh = noBtn.offsetHeight * noScale;
   const vw = window.innerWidth;
   const vh = window.innerHeight;
+  const yr = yesBtn.getBoundingClientRect();
+  const pad = 60; // buffer around YES button
   let nx, ny, attempts = 0;
   do {
     nx = Math.random() * (vw - bw - 24) + 12;
     ny = Math.random() * (vh - bh - 80) + 12;
     attempts++;
-  } while (attempts < 30 && Math.hypot(nx - vw/2, ny - vh/2) < 80);
+    // Keep trying if NO would land on top of YES
+    const overlaps = nx < yr.right + pad && nx + bw > yr.left - pad &&
+                     ny < yr.bottom + pad && ny + bh > yr.top - pad;
+    if (!overlaps) break;
+  } while (attempts < 50);
 
   noBtn.style.left = nx + 'px';
   noBtn.style.top  = ny + 'px';
@@ -680,7 +686,11 @@ noBtn.addEventListener('touchstart', (e) => {
 /* ────────────────────────────────────
    YES BUTTON — HANDLE
 ──────────────────────────────────── */
+let yesFired = false;
+
 function handleYes() {
+  if (yesFired) return;
+  yesFired = true;
   // Populate receipt
   document.getElementById('r-date').textContent    = nowString();
   document.getElementById('r-count').textContent   = escapeCount;
