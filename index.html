@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>💌 Kyaw Min Khant has a question for HSU</title>
+<title>💌 Kyaw Min Khant has a question for Thae</title>
 <style>
 /* ── RESET ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -479,7 +479,7 @@ body{
         </circle>
       </svg>
 
-      <p class="dear-text">Dear <span>HSU</span>,</p>
+      <p class="dear-text">Dear <span>Thae</span>,</p>
       <h2 class="question-text">Will you be my Valentine? 💕</h2>
 
       <div id="buttons-area">
@@ -502,7 +502,7 @@ body{
       <p class="back-p">You just made <strong>Kyaw Min Khant</strong> very happy!</p>
       <p class="back-p" style="font-size:clamp(17px,4.5vw,22px);margin-top:6px">
         Happy Valentine's Day,<br>
-        <span style="color:#e91e8c;font-weight:800">HSU</span>! 💕
+        <span style="color:#e91e8c;font-weight:800">Thae</span>! 💕
       </p>
     </div>
 
@@ -518,7 +518,7 @@ body{
       <div class="r-date" id="r-date"></div>
       <hr class="r-div">
       <div class="r-row" style="animation-delay:.1s"><span class="r-label">FROM</span><span class="r-val">Kyaw Min Khant</span></div>
-      <div class="r-row" style="animation-delay:.2s"><span class="r-label">TO</span><span class="r-val">HSU</span></div>
+      <div class="r-row" style="animation-delay:.2s"><span class="r-label">TO</span><span class="r-val">Thae</span></div>
       <hr class="r-div">
       <div class="r-row" style="animation-delay:.35s"><span class="r-label">ASKED</span><span class="r-val">Will you be my Valentine?</span></div>
       <div class="r-row" style="animation-delay:.5s"><span class="r-label">ANSWER</span><span class="r-val yes">YES ✓</span></div>
@@ -527,7 +527,7 @@ body{
       <div class="r-verdict" id="r-verdict" style="animation-delay:.75s">"Love at first sight!"</div>
       <div class="r-stamp"><div class="stamp-box">OFFICIAL</div></div>
       <hr class="r-div">
-      <div class="r-footer">Thank you for your love! 💕<br>Made with ❤️ for HSU</div>
+      <div class="r-footer">Thank you for your love! 💕<br>Made with ❤️ for Thae</div>
     </div>
     <div id="receipt-bottom"></div>
   </div>
@@ -882,7 +882,7 @@ function buildReceiptCanvas() {
 
   div(130);
   row('FROM', 'Kyaw Min Khant', 150);
-  row('TO',   'HSU',            172);
+  row('TO',   'Thae',            172);
   div(184);
   row('ASKED',  'Will you be my Valentine?', 206);
   row('ANSWER', 'YES ✓',                    230, true);
@@ -907,7 +907,7 @@ function buildReceiptCanvas() {
   // Footer
   g.fillStyle='#e91e8c'; g.font=`11px ${mono}`; g.textAlign='center';
   g.fillText('Thank you for your love! ♥', W/2, 398);
-  g.fillText('Made with ♥ for HSU', W/2, 415);
+  g.fillText('Made with ♥ for Thae', W/2, 415);
 
   // Torn bottom
   g.fillStyle = '#ffd0e0';
@@ -921,7 +921,7 @@ function buildReceiptCanvas() {
 function downloadReceipt() {
   const c = buildReceiptCanvas();
   const a = document.createElement('a');
-  a.download = 'valentine-receipt-hsu.png';
+  a.download = 'valentine-receipt-thae.png';
   a.href = c.toDataURL('image/png');
   a.click();
 }
@@ -932,7 +932,7 @@ function downloadReceipt() {
 async function shareVia(platform) {
   const n = escapeCount;
   const v = getVerdict(n).replace(/"/g,'');
-  const txt = `💌 HSU said YES to being Kyaw Min Khant's Valentine!\n✨ ${n} escape attempt${n!==1?'s':''} — ${v}\n#ValentinesDay #WillYouBeMyValentine 💕`;
+  const txt = `💌 Thae said YES to being Kyaw Min Khant's Valentine!\n✨ ${n} escape attempt${n!==1?'s':''} — ${v}\n#ValentinesDay #WillYouBeMyValentine 💕`;
   const enc = encodeURIComponent(txt);
 
   if (platform === 'whatsapp') {
@@ -952,7 +952,7 @@ async function shareVia(platform) {
         await navigator.share({
           files: [file],
           title: "Valentine's Receipt",
-          text: `HSU said YES! 💕 ${n} escape attempts — ${v}`,
+          text: `Thae said YES! 💕 ${n} escape attempts — ${v}`,
         });
       } catch (e) {
         if (e.name !== 'AbortError') fallbackShare(platform, blob);
